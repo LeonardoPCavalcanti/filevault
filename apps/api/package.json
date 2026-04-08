@@ -58,7 +58,7 @@
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
     "moduleNameMapper": {
-      "^@filevault/shared$": "<rootDir>/../../packages/shared/src"
+      "^@filevault/shared$": "<rootDir>/../../../packages/shared/src"
     }
   }
 }
