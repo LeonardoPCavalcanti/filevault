@@ -9,23 +9,23 @@ import {
 @Entity('files')
 export class FileEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column()
-  name: string;
+  name!: string;
 
   @Column()
-  key: string;
+  key!: string;
 
   @Column()
-  mimeType: string;
+  mimeType!: string;
 
   @Column({ type: 'bigint' })
-  size: number;
+  size!: number;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 }
