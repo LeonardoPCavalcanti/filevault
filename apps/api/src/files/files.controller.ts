@@ -29,10 +29,10 @@ export class FilesController {
   constructor(private readonly filesService: FilesService) {}
 
   @Post('upload')
-  @ApiOperation({ summary: 'Upload a file (JPEG, PNG, or PDF)' })
+  @ApiOperation({ summary: 'Upload de arquivo (JPEG, PNG ou PDF)' })
   @ApiConsumes('multipart/form-data')
-  @ApiResponse({ status: 201, description: 'File uploaded successfully' })
-  @ApiResponse({ status: 400, description: 'Invalid file type or size' })
+  @ApiResponse({ status: 201, description: 'Arquivo enviado com sucesso' })
+  @ApiResponse({ status: 400, description: 'Tipo ou tamanho de arquivo invalido' })
   @UseInterceptors(
     FileInterceptor('file', {
       limits: { fileSize: MAX_FILE_SIZE },
@@ -40,39 +40,39 @@ export class FilesController {
   )
   async upload(@UploadedFile() file: Express.Multer.File) {
     if (!file) {
-      throw new BadRequestException('No file provided');
+      throw new BadRequestException('Nenhum arquivo enviado');
     }
     return this.filesService.upload(file);
   }
 
   @Get()
-  @ApiOperation({ summary: 'List uploaded files (paginated)' })
-  @ApiResponse({ status: 200, description: 'Paginated file list' })
+  @ApiOperation({ summary: 'Listar arquivos enviados (paginado)' })
+  @ApiResponse({ status: 200, description: 'Lista de arquivos paginada' })
   async findAll(@Query() query: FileListQueryDto) {
     return this.filesService.findAll(query.page, query.limit);
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Get file details by ID' })
-  @ApiResponse({ status: 200, description: 'File metadata' })
-  @ApiResponse({ status: 404, description: 'File not found' })
+  @ApiOperation({ summary: 'Obter detalhes do arquivo por ID' })
+  @ApiResponse({ status: 200, description: 'Metadados do arquivo' })
+  @ApiResponse({ status: 404, description: 'Arquivo nao encontrado' })
   async findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.filesService.findOne(id);
   }
 
   @Get(':id/preview')
-  @ApiOperation({ summary: 'Get presigned URL for file preview' })
-  @ApiResponse({ status: 200, description: 'Presigned URL with expiry' })
-  @ApiResponse({ status: 404, description: 'File not found' })
+  @ApiOperation({ summary: 'Obter URL temporaria para preview do arquivo' })
+  @ApiResponse({ status: 200, description: 'URL temporaria com expiracao' })
+  @ApiResponse({ status: 404, description: 'Arquivo nao encontrado' })
   async preview(@Param('id', ParseUUIDPipe) id: string) {
     return this.filesService.getPreviewUrl(id);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiOperation({ summary: 'Delete a file' })
-  @ApiResponse({ status: 204, description: 'File deleted' })
-  @ApiResponse({ status: 404, description: 'File not found' })
+  @ApiOperation({ summary: 'Deletar um arquivo' })
+  @ApiResponse({ status: 204, description: 'Arquivo deletado' })
+  @ApiResponse({ status: 404, description: 'Arquivo nao encontrado' })
   async remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.filesService.remove(id);
   }

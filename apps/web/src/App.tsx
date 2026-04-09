@@ -18,9 +18,9 @@ export default function App() {
   const handleDelete = async (file: FileMetadata) => {
     try {
       await deleteFile.mutateAsync(file.id);
-      toast.success(`${file.name} deleted`);
+      toast.success(`${file.name} deletado`);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Delete failed');
+      toast.error(error instanceof Error ? error.message : 'Falha ao deletar');
     }
   };
 
@@ -40,7 +40,7 @@ export default function App() {
         </section>
 
         <section>
-          <h2 className="text-lg font-medium text-gray-700 mb-3">Files</h2>
+          <h2 className="text-lg font-medium text-gray-700 mb-3">Arquivos</h2>
           <div className="bg-white rounded-lg shadow-sm border border-gray-200">
             <FileList
               files={data?.files ?? []}

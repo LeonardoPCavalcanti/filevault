@@ -13,7 +13,7 @@ export function UploadZone() {
     async (acceptedFiles: File[]) => {
       for (const file of acceptedFiles) {
         if (file.size > MAX_FILE_SIZE) {
-          toast.error(`${file.name} exceeds 10MB limit`);
+          toast.error(`${file.name} excede o limite de 10MB`);
           continue;
         }
 
@@ -25,10 +25,10 @@ export function UploadZone() {
         try {
           await uploadFile.mutateAsync(file);
           setProgress(100);
-          toast.success(`${file.name} uploaded successfully`);
+          toast.success(`${file.name} enviado com sucesso`);
         } catch (error) {
           toast.error(
-            error instanceof Error ? error.message : 'Upload failed',
+            error instanceof Error ? error.message : 'Falha no upload',
           );
         } finally {
           clearInterval(interval);
@@ -64,7 +64,7 @@ export function UploadZone() {
         <input {...getInputProps()} />
         <Upload className="mx-auto h-10 w-10 text-gray-400 mb-3" />
         {isDragActive ? (
-          <p className="text-blue-600 font-medium">Drop the file here</p>
+          <p className="text-blue-600 font-medium">Solte o arquivo aqui</p>
         ) : (
           <>
             <p className="text-gray-600 font-medium">
@@ -89,7 +89,7 @@ export function UploadZone() {
       {fileRejections.length > 0 && (
         <div className="flex items-center gap-2 text-red-600 text-sm">
           <AlertCircle className="h-4 w-4" />
-          <span>File type not supported or exceeds 10MB</span>
+          <span>Tipo de arquivo nao suportado ou excede 10MB</span>
         </div>
       )}
     </div>

@@ -28,13 +28,13 @@ export class FilesService {
   async upload(file: Express.Multer.File): Promise<FileMetadata> {
     if (file.size > MAX_FILE_SIZE) {
       throw new BadRequestException(
-        `File size exceeds maximum of ${MAX_FILE_SIZE / 1024 / 1024}MB`,
+        `Tamanho do arquivo excede o maximo de ${MAX_FILE_SIZE / 1024 / 1024}MB`,
       );
     }
 
     if (!validateFileType(file.buffer, file.mimetype)) {
       throw new BadRequestException(
-        'Invalid file type. Allowed: JPEG, PNG, PDF',
+        'Tipo de arquivo invalido. Permitidos: JPEG, PNG, PDF',
       );
     }
 
@@ -74,7 +74,7 @@ export class FilesService {
   async findOne(id: string): Promise<FileMetadata> {
     const file = await this.fileRepo.findOneBy({ id });
     if (!file) {
-      throw new NotFoundException(`File with id ${id} not found`);
+      throw new NotFoundException(`Arquivo com id ${id} nao encontrado`);
     }
     return toFileResponse(file);
   }
@@ -82,7 +82,7 @@ export class FilesService {
   async getPreviewUrl(id: string): Promise<PreviewResponse> {
     const file = await this.fileRepo.findOneBy({ id });
     if (!file) {
-      throw new NotFoundException(`File with id ${id} not found`);
+      throw new NotFoundException(`Arquivo com id ${id} nao encontrado`);
     }
 
     const expiresIn = 900;
@@ -97,7 +97,7 @@ export class FilesService {
   async remove(id: string): Promise<void> {
     const file = await this.fileRepo.findOneBy({ id });
     if (!file) {
-      throw new NotFoundException(`File with id ${id} not found`);
+      throw new NotFoundException(`Arquivo com id ${id} nao encontrado`);
     }
 
     await this.storage.delete(file.key);

@@ -57,10 +57,10 @@ export function FileList({
           <thead>
             <tr className="border-b border-gray-200 text-left text-sm text-gray-500">
               <th className="px-4 py-3 w-10" />
-              <th className="px-4 py-3">Name</th>
-              <th className="px-4 py-3">Size</th>
-              <th className="px-4 py-3">Date</th>
-              <th className="px-4 py-3 w-24">Actions</th>
+              <th className="px-4 py-3">Nome</th>
+              <th className="px-4 py-3">Tamanho</th>
+              <th className="px-4 py-3">Data</th>
+              <th className="px-4 py-3 w-24">Acoes</th>
             </tr>
           </thead>
           <tbody>
@@ -77,7 +77,7 @@ export function FileList({
     return (
       <div className="text-center py-12 text-gray-400">
         <FolderOpen className="mx-auto h-12 w-12 mb-3" />
-        <p>No files uploaded yet</p>
+        <p>Nenhum arquivo enviado ainda</p>
       </div>
     );
   }
@@ -89,10 +89,10 @@ export function FileList({
           <thead>
             <tr className="border-b border-gray-200 text-left text-sm text-gray-500">
               <th className="px-4 py-3 w-10" />
-              <th className="px-4 py-3">Name</th>
-              <th className="px-4 py-3">Size</th>
-              <th className="px-4 py-3">Date</th>
-              <th className="px-4 py-3 w-24">Actions</th>
+              <th className="px-4 py-3">Nome</th>
+              <th className="px-4 py-3">Tamanho</th>
+              <th className="px-4 py-3">Data</th>
+              <th className="px-4 py-3 w-24">Acoes</th>
             </tr>
           </thead>
           <tbody>
@@ -117,14 +117,14 @@ export function FileList({
                   <div className="flex items-center gap-1">
                     <button
                       onClick={() => onPreview(file)}
-                      aria-label="Preview"
+                      aria-label="Visualizar"
                       className="p-1.5 rounded hover:bg-blue-50 text-blue-600 transition-colors"
                     >
                       <Eye className="h-4 w-4" />
                     </button>
                     <button
                       onClick={() => onDelete(file)}
-                      aria-label="Delete"
+                      aria-label="Deletar"
                       className="p-1.5 rounded hover:bg-red-50 text-red-600 transition-colors"
                     >
                       <Trash2 className="h-4 w-4" />

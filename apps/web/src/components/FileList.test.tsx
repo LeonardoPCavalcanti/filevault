@@ -70,7 +70,7 @@ describe('FileList', () => {
         onPageChange={vi.fn()}
       />,
     );
-    expect(screen.getByText(/no files/i)).toBeInTheDocument();
+    expect(screen.getByText(/nenhum arquivo/i)).toBeInTheDocument();
   });
 
   it('calls onPreview when eye button clicked', async () => {
@@ -87,7 +87,7 @@ describe('FileList', () => {
         onPageChange={vi.fn()}
       />,
     );
-    const previewButtons = screen.getAllByLabelText('Preview');
+    const previewButtons = screen.getAllByLabelText('Visualizar');
     await userEvent.click(previewButtons[0]);
     expect(onPreview).toHaveBeenCalledWith(mockFiles[0]);
   });
@@ -106,7 +106,7 @@ describe('FileList', () => {
         onPageChange={vi.fn()}
       />,
     );
-    const deleteButtons = screen.getAllByLabelText('Delete');
+    const deleteButtons = screen.getAllByLabelText('Deletar');
     await userEvent.click(deleteButtons[0]);
     expect(onDelete).toHaveBeenCalledWith(mockFiles[0]);
   });

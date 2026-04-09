@@ -1,4 +1,4 @@
-// apps/api/test/files.e2e-spec.ts
+// apps/api/test/files.e2e-spec.ts - Testes E2E dos endpoints de arquivos
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
@@ -58,7 +58,7 @@ describe('Files (e2e)', () => {
 
   beforeEach(async () => {
     jest.clearAllMocks();
-    // Clear all data between tests
+    // Limpar todos os dados entre os testes
     await dataSource.synchronize(true);
   });
 

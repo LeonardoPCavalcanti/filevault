@@ -16,7 +16,7 @@ export class HealthController {
 
   @Get()
   @HealthCheck()
-  @ApiOperation({ summary: 'Application health check' })
+  @ApiOperation({ summary: 'Verificacao de saude da aplicacao' })
   check() {
     return this.health.check([() => this.db.pingCheck('database')]);
   }

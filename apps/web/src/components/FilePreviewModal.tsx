@@ -41,7 +41,7 @@ export function FilePreviewModal({
             )}
             <button
               onClick={onClose}
-              aria-label="Close"
+              aria-label="Fechar"
               className="p-1.5 rounded hover:bg-gray-100 transition-colors"
             >
               <X className="h-5 w-5" />

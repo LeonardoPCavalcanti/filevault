@@ -54,7 +54,7 @@ describe('FilePreviewModal', () => {
         onClose={onClose}
       />,
     );
-    await userEvent.click(screen.getByLabelText('Close'));
+    await userEvent.click(screen.getByLabelText('Fechar'));
     expect(onClose).toHaveBeenCalled();
   });
 });

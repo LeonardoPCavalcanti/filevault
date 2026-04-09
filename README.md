@@ -1,52 +1,52 @@
 # FileVault
 
-File upload and management application built with NestJS + React + Cloudflare R2.
+Aplicacao de upload e gerenciamento de arquivos construida com NestJS + React + Cloudflare R2.
 
-**Technical test for:** Desenvolvedor FullStack - ConectaDev
+**Teste tecnico para:** Desenvolvedor FullStack - ConectaDev
 
-## Tech Stack
+## Stack
 
 - **Backend:** NestJS, TypeORM, PostgreSQL
 - **Frontend:** React 18, TypeScript, Vite, Tailwind CSS, TanStack Query
-- **Storage:** Cloudflare R2 (S3-compatible, presigned URLs)
+- **Armazenamento:** Cloudflare R2 (compativel com S3, presigned URLs)
 - **Infra:** Docker Compose, Turborepo monorepo
 - **CI:** GitHub Actions
 - **Deploy:** Railway (API + DB) + Vercel (Frontend)
 
-## Key Design Decisions
+## Decisoes de Projeto
 
-- **No base64 in database** -- files stored in Cloudflare R2, only metadata + key in PostgreSQL
-- **Presigned URLs** -- files never publicly accessible; temporary URLs (15min expiry)
-- **Magic bytes validation** -- validates actual file content, not just extension
-- **Monorepo with shared types** -- end-to-end type safety
+- **Sem base64 no banco** -- arquivos armazenados no Cloudflare R2, apenas metadados + chave no PostgreSQL
+- **Presigned URLs** -- arquivos nunca ficam publicos; URLs temporarias (expiracao de 15min)
+- **Validacao por magic bytes** -- valida o conteudo real do arquivo, nao apenas a extensao
+- **Monorepo com tipos compartilhados** -- type safety de ponta a ponta
 
-## Quick Start
+## Inicio Rapido
 
-### Prerequisites
+### Pre-requisitos
 
 - Docker + Docker Compose
-- Cloudflare R2 account (free tier)
+- Conta no Cloudflare R2 (tier gratuito)
 
-### 1. Clone and configure
+### 1. Clonar e configurar
 
 ```bash
 git clone <repo-url>
 cd filevault
 cp .env.example .env
-# Edit .env with your R2 credentials
+# Edite o .env com suas credenciais do R2
 ```
 
-### 2. Run with Docker Compose
+### 2. Rodar com Docker Compose
 
 ```bash
 docker compose up
 ```
 
 - API: http://localhost:3000/api
-- Swagger docs: http://localhost:3000/api/docs
+- Documentacao Swagger: http://localhost:3000/api/docs
 - Frontend: http://localhost:8080
 
-### Local Development (without Docker)
+### Desenvolvimento Local (sem Docker)
 
 ```bash
 npm install
@@ -57,46 +57,46 @@ npm run dev
 - API: http://localhost:3000
 - Frontend: http://localhost:5173
 
-## API Endpoints
+## Endpoints da API
 
-| Method | Route | Description |
-|--------|-------|-------------|
-| POST | /api/files/upload | Upload file (multipart/form-data) |
-| GET | /api/files?page=1&limit=20 | List files (paginated) |
-| GET | /api/files/:id | File details |
-| GET | /api/files/:id/preview | Get presigned URL |
-| DELETE | /api/files/:id | Delete file |
+| Metodo | Rota | Descricao |
+|--------|------|-----------|
+| POST | /api/files/upload | Upload de arquivo (multipart/form-data) |
+| GET | /api/files?page=1&limit=20 | Listar arquivos (paginado) |
+| GET | /api/files/:id | Detalhes do arquivo |
+| GET | /api/files/:id/preview | Obter presigned URL |
+| DELETE | /api/files/:id | Deletar arquivo |
 | GET | /api/health | Health check |
 
-## Security
+## Seguranca
 
-- MIME type whitelist (JPEG, PNG, PDF only)
-- Magic bytes validation (prevents extension spoofing)
-- File size limit (10MB)
-- Filename sanitization (prevents path traversal)
-- Rate limiting (10 requests/minute on upload)
-- Helmet security headers
-- CORS restricted to frontend origin
-- Presigned URLs with 15-minute expiry
+- Whitelist de MIME types (apenas JPEG, PNG, PDF)
+- Validacao por magic bytes (previne spoofing de extensao)
+- Limite de tamanho (10MB)
+- Sanitizacao de nome de arquivo (previne path traversal)
+- Rate limiting (10 requisicoes/minuto no upload)
+- Headers de seguranca com Helmet
+- CORS restrito a origem do frontend
+- Presigned URLs com expiracao de 15 minutos
 
-## Testing
+## Testes
 
 ```bash
-npm test                                    # All tests
-npm test --workspace=@filevault/api         # Backend unit tests
-npm run test:e2e --workspace=@filevault/api # Backend E2E tests
-npm test --workspace=@filevault/web         # Frontend tests
+npm test                                    # Todos os testes
+npm test --workspace=@filevault/api         # Testes unitarios do backend
+npm run test:e2e --workspace=@filevault/api # Testes E2E do backend
+npm test --workspace=@filevault/web         # Testes do frontend
 ```
 
-## Project Structure
+## Estrutura do Projeto
 
 ```
 filevault/
 ├── apps/
-│   ├── api/        # NestJS backend
-│   └── web/        # React frontend
+│   ├── api/        # Backend NestJS
+│   └── web/        # Frontend React
 ├── packages/
-│   └── shared/     # Shared TypeScript types
+│   └── shared/     # Tipos TypeScript compartilhados
 ├── docker-compose.yml
 └── turbo.json
 ```

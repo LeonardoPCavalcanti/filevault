@@ -23,7 +23,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('FileVault API')
-    .setDescription('File upload and management API')
+    .setDescription('API de upload e gerenciamento de arquivos')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);

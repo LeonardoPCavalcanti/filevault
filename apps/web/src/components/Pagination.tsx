@@ -15,7 +15,7 @@ export function Pagination({ page, total, limit, onPageChange }: PaginationProps
   return (
     <div className="flex items-center justify-between border-t border-gray-200 pt-4 mt-4">
       <p className="text-sm text-gray-500">
-        {total} {total === 1 ? 'file' : 'files'} total
+        {total} {total === 1 ? 'arquivo' : 'arquivos'} no total
       </p>
       <div className="flex items-center gap-2">
         <button
@@ -26,7 +26,7 @@ export function Pagination({ page, total, limit, onPageChange }: PaginationProps
           <ChevronLeft className="h-5 w-5" />
         </button>
         <span className="text-sm text-gray-600">
-          Page {page} of {totalPages}
+          Pagina {page} de {totalPages}
         </span>
         <button
           onClick={() => onPageChange(page + 1)}
