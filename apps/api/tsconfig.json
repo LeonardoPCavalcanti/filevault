@@ -16,7 +16,7 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "@filevault/shared": ["../../packages/shared/src"]
+      "@filevault/shared": ["../../packages/shared/dist"]
     }
   }
 }
