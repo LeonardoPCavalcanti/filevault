@@ -3,7 +3,7 @@ import { useDropzone } from 'react-dropzone';
 import { Upload, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { useUploadFile } from '../hooks/use-files';
-import { ALLOWED_MIME_TYPES, MAX_FILE_SIZE } from '@filevault/shared';
+import { MAX_FILE_SIZE } from '@filevault/shared';
 
 export function UploadZone() {
   const uploadFile = useUploadFile();
