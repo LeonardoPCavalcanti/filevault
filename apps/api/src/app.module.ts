@@ -22,7 +22,7 @@ import { r2Config } from './config/r2.config';
         type: 'postgres',
         url: config.get<string>('DATABASE_URL'),
         autoLoadEntities: true,
-        synchronize: process.env.NODE_ENV !== 'production',
+        synchronize: true,
       }),
     }),
     ThrottlerModule.forRoot([
