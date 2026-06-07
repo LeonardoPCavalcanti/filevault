@@ -1,8 +1,12 @@
 # FileVault
 
-Aplicacao de upload e gerenciamento de arquivos construida com NestJS + React + Cloudflare R2.
+Aplicação de upload e gerenciamento de arquivos construída com NestJS + React + Cloudflare R2.
 
-**Teste tecnico para:** Desenvolvedor FullStack - ConectaDev
+**Teste técnico para:** Desenvolvedor FullStack — ConectaDev
+
+[![FileVault — upload de arquivos](docs/preview.png)](https://filevault-henna.vercel.app)
+
+**🔗 Demo ao vivo: [filevault-henna.vercel.app](https://filevault-henna.vercel.app)**
 
 ---
 
