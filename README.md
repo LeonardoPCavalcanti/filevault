@@ -10,6 +10,29 @@ Aplicação de upload e gerenciamento de arquivos construída com NestJS + React
 
 ---
 
+## O que este projeto ensina
+
+> Mais do que um CRUD de arquivos, este projeto estuda **como aplicações reais lidam com upload de blobs** sem sobrecarregar o servidor nem confiar cegamente no cliente.
+
+### 1. Upload desacoplado com Presigned URLs
+O caminho ingênuo — o arquivo passa pelo servidor da API até o storage — desperdiça banda e memória do backend e cria um gargalo. A abordagem usada aqui separa **dados** de **controle**:
+- O banco (PostgreSQL) guarda apenas **metadados** (nome, tamanho, tipo, chave do objeto) — nunca os bytes.
+- Os bytes vivem no **object storage** (Cloudflare R2, compatível com a API S3).
+- O acesso ao arquivo é dado por uma **presigned URL**: um link **temporário e assinado** (expira em 15 min) que autoriza uma única operação. O arquivo nunca fica público; não há servidor servindo o blob.
+
+Esse é o padrão de fato em produção (S3, GCS, R2) — e a razão de NÃO guardar arquivos como base64 no banco.
+
+### 2. Não confie na extensão: validação por *magic bytes*
+Um arquivo `virus.exe` renomeado para `foto.png` engana a extensão e até o MIME enviado pelo cliente. Por isso a validação lê os **bytes iniciais** do arquivo (a *magic number* — ex.: PNG começa com `89 50 4E 47`) para confirmar o tipo **real**. É um exemplo concreto de **defense in depth** e de "nunca confie na entrada do cliente".
+
+### 3. Type safety de ponta a ponta (monorepo)
+Frontend e backend compartilham os **mesmos tipos TypeScript** via Turborepo. O contrato da API é verificado em tempo de compilação dos dois lados — se o backend muda um campo, o frontend não compila. Menos bugs de integração, mais refatoração segura.
+
+### 4. Superfície de ataque de um endpoint de upload
+O projeto trata as ameaças clássicas: limite de tamanho (evita exaustão de disco/memória), *rate limiting* (evita abuso), sanitização de filename (evita **path traversal**), whitelist de MIME, headers de segurança (Helmet) e CORS restrito. Bom estudo de **como pensar em segurança** num recurso que recebe dados arbitrários.
+
+---
+
 ## Demonstracao Online
 
 A forma mais rapida de testar. Basta acessar o link abaixo:
