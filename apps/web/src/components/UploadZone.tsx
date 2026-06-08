@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Upload, AlertCircle } from 'lucide-react';
+import { UploadCloud, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { useUploadFile } from '../hooks/use-files';
 import { MAX_FILE_SIZE } from '@filevault/shared';
@@ -52,44 +52,59 @@ export function UploadZone() {
     });
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-3">
       <div
         {...getRootProps()}
-        className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${
+        className={`group relative cursor-pointer overflow-hidden rounded-2xl border border-dashed px-6 py-12 text-center transition-[border-color,background-color,box-shadow] duration-200 ${
           isDragActive
-            ? 'border-blue-500 bg-blue-50'
-            : 'border-gray-300 hover:border-gray-400'
+            ? 'border-signal/80 bg-signal/[0.06] shadow-[0_0_0_1px_rgba(200,242,61,0.4),0_0_40px_-8px_rgba(200,242,61,0.45)]'
+            : 'border-line-strong bg-surface/40 hover:border-signal/40 hover:bg-surface/70'
         }`}
       >
         <input {...getInputProps()} />
-        <Upload className="mx-auto h-10 w-10 text-gray-400 mb-3" />
+        <div
+          className={`mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border transition-colors duration-200 ${
+            isDragActive
+              ? 'border-signal/50 bg-signal/15 text-signal'
+              : 'border-line-strong bg-elevated/60 text-muted group-hover:text-signal'
+          }`}
+        >
+          <UploadCloud className="h-6 w-6" />
+        </div>
         {isDragActive ? (
-          <p className="text-blue-600 font-medium">Solte o arquivo aqui</p>
+          <p className="font-medium text-signal">Solte para enviar ao vault</p>
         ) : (
           <>
-            <p className="text-gray-600 font-medium">
-              Drag & drop ou clique para enviar
+            <p className="font-medium text-ink">
+              Arraste um arquivo ou{' '}
+              <span className="text-signal underline-offset-4 group-hover:underline">
+                selecione
+              </span>
             </p>
-            <p className="text-sm text-gray-400 mt-1">
-              .jpg, .png, .pdf (max 10MB)
-            </p>
+            <p className="mono-label mt-2">drag · drop · click — jpg · png · pdf — max 10MB</p>
           </>
         )}
       </div>
 
       {progress > 0 && (
-        <div className="w-full bg-gray-200 rounded-full h-2">
-          <div
-            className="bg-blue-600 h-2 rounded-full transition-all duration-200"
-            style={{ width: `${progress}%` }}
-          />
+        <div className="space-y-1.5">
+          <div className="flex items-center justify-between">
+            <span className="mono-label">transferindo</span>
+            <span className="tabular text-xs text-signal">{progress}%</span>
+          </div>
+          <div className="h-1.5 w-full overflow-hidden rounded-full bg-line">
+            <div
+              className="h-full rounded-full bg-signal transition-[width] duration-200 ease-out"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
         </div>
       )}
 
       {fileRejections.length > 0 && (
-        <div className="flex items-center gap-2 text-red-600 text-sm">
-          <AlertCircle className="h-4 w-4" />
-          <span>Tipo de arquivo nao suportado ou excede 10MB</span>
+        <div className="flex items-center gap-2 rounded-lg border border-danger/30 bg-danger/10 px-3 py-2 text-sm text-danger">
+          <AlertCircle className="h-4 w-4 shrink-0" />
+          <span>Tipo de arquivo não suportado ou excede 10MB.</span>
         </div>
       )}
     </div>

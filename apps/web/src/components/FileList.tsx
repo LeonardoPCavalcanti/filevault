@@ -1,4 +1,4 @@
-import { Eye, Trash2, FolderOpen } from 'lucide-react';
+import { Eye, Trash2, Inbox } from 'lucide-react';
 import type { FileMetadata } from '@filevault/shared';
 import { FileIcon } from './FileIcon';
 import { Pagination } from './Pagination';
@@ -28,15 +28,31 @@ function formatDate(iso: string): string {
   });
 }
 
+const headCell = 'px-5 py-3 mono-label text-left';
+
 function SkeletonRow() {
   return (
-    <tr data-testid="skeleton-row" className="animate-pulse">
-      <td className="px-4 py-3"><div className="h-4 bg-gray-200 rounded w-6" /></td>
-      <td className="px-4 py-3"><div className="h-4 bg-gray-200 rounded w-32" /></td>
-      <td className="px-4 py-3"><div className="h-4 bg-gray-200 rounded w-16" /></td>
-      <td className="px-4 py-3"><div className="h-4 bg-gray-200 rounded w-20" /></td>
-      <td className="px-4 py-3"><div className="h-4 bg-gray-200 rounded w-16" /></td>
+    <tr data-testid="skeleton-row" className="border-t border-line/60">
+      <td className="px-5 py-4"><div className="h-4 w-5 animate-pulse rounded bg-line-strong" /></td>
+      <td className="px-5 py-4"><div className="h-4 w-40 animate-pulse rounded bg-line-strong" /></td>
+      <td className="px-5 py-4"><div className="h-4 w-16 animate-pulse rounded bg-line-strong" /></td>
+      <td className="px-5 py-4"><div className="h-4 w-20 animate-pulse rounded bg-line-strong" /></td>
+      <td className="px-5 py-4"><div className="ml-auto h-4 w-14 animate-pulse rounded bg-line-strong" /></td>
     </tr>
+  );
+}
+
+function Header() {
+  return (
+    <thead>
+      <tr className="bg-elevated/40">
+        <th className={`${headCell} w-12`} />
+        <th className={headCell}>Nome</th>
+        <th className={headCell}>Tamanho</th>
+        <th className={headCell}>Enviado</th>
+        <th className={`${headCell} w-28 text-right`}>Ações</th>
+      </tr>
+    </thead>
   );
 }
 
@@ -53,16 +69,8 @@ export function FileList({
   if (isLoading) {
     return (
       <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            <tr className="border-b border-gray-200 text-left text-sm text-gray-500">
-              <th className="px-4 py-3 w-10" />
-              <th className="px-4 py-3">Nome</th>
-              <th className="px-4 py-3">Tamanho</th>
-              <th className="px-4 py-3">Data</th>
-              <th className="px-4 py-3 w-24">Acoes</th>
-            </tr>
-          </thead>
+        <table className="w-full border-collapse">
+          <Header />
           <tbody>
             <SkeletonRow />
             <SkeletonRow />
@@ -75,9 +83,12 @@ export function FileList({
 
   if (files.length === 0) {
     return (
-      <div className="text-center py-12 text-gray-400">
-        <FolderOpen className="mx-auto h-12 w-12 mb-3" />
-        <p>Nenhum arquivo enviado ainda</p>
+      <div className="flex flex-col items-center px-6 py-16 text-center">
+        <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-line-strong bg-elevated/50 text-faint">
+          <Inbox className="h-6 w-6" />
+        </div>
+        <p className="font-medium text-muted">Nenhum arquivo enviado ainda</p>
+        <p className="mono-label mt-2">o manifesto aparecerá aqui</p>
       </div>
     );
   }
@@ -85,47 +96,40 @@ export function FileList({
   return (
     <div>
       <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            <tr className="border-b border-gray-200 text-left text-sm text-gray-500">
-              <th className="px-4 py-3 w-10" />
-              <th className="px-4 py-3">Nome</th>
-              <th className="px-4 py-3">Tamanho</th>
-              <th className="px-4 py-3">Data</th>
-              <th className="px-4 py-3 w-24">Acoes</th>
-            </tr>
-          </thead>
+        <table className="w-full border-collapse">
+          <Header />
           <tbody>
-            {files.map((file) => (
+            {files.map((file, idx) => (
               <tr
                 key={file.id}
-                className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
+                className="rise group border-t border-line/60 transition-colors duration-150 hover:bg-signal/[0.035]"
+                style={{ '--i': Math.min(idx, 8) } as React.CSSProperties}
               >
-                <td className="px-4 py-3">
+                <td className="px-5 py-4">
                   <FileIcon mimeType={file.mimeType} />
                 </td>
-                <td className="px-4 py-3 font-medium text-gray-800 truncate max-w-xs">
+                <td className="max-w-xs truncate px-5 py-4 font-medium text-ink">
                   {file.name}
                 </td>
-                <td className="px-4 py-3 text-sm text-gray-500">
+                <td className="tabular px-5 py-4 text-sm text-muted">
                   {formatSize(file.size)}
                 </td>
-                <td className="px-4 py-3 text-sm text-gray-500">
+                <td className="tabular px-5 py-4 text-sm text-muted">
                   {formatDate(file.createdAt)}
                 </td>
-                <td className="px-4 py-3">
-                  <div className="flex items-center gap-1">
+                <td className="px-5 py-4">
+                  <div className="flex items-center justify-end gap-1 opacity-70 transition-opacity duration-150 group-hover:opacity-100">
                     <button
                       onClick={() => onPreview(file)}
                       aria-label="Visualizar"
-                      className="p-1.5 rounded hover:bg-blue-50 text-blue-600 transition-colors"
+                      className="rounded-lg p-2 text-muted transition-colors duration-150 hover:bg-signal/10 hover:text-signal active:scale-95"
                     >
                       <Eye className="h-4 w-4" />
                     </button>
                     <button
                       onClick={() => onDelete(file)}
                       aria-label="Deletar"
-                      className="p-1.5 rounded hover:bg-red-50 text-red-600 transition-colors"
+                      className="rounded-lg p-2 text-muted transition-colors duration-150 hover:bg-danger/10 hover:text-danger active:scale-95"
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>
@@ -136,12 +140,14 @@ export function FileList({
           </tbody>
         </table>
       </div>
-      <Pagination
-        page={page}
-        total={total}
-        limit={limit}
-        onPageChange={onPageChange}
-      />
+      <div className="px-5 pb-4">
+        <Pagination
+          page={page}
+          total={total}
+          limit={limit}
+          onPageChange={onPageChange}
+        />
+      </div>
     </div>
   );
 }

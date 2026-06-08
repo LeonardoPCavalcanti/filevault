@@ -1,1 +1,173 @@
 @import 'tailwindcss';
+
+/* ───────────────────────────────────────────────────────────
+   FileVault — "Secure Console".
+   Vault de arquivos de nível de engenharia: ardósia quase preta,
+   grade de blueprint, mono técnico e um único acento lima-sinal.
+   Movimento de restrição (Emil): uma carga orquestrada, transições
+   rápidas e propositais — nada decorativo em loop.
+   ─────────────────────────────────────────────────────────── */
+@theme {
+  --font-sans: 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
+
+  --color-base: #0a0e10;
+  --color-surface: #0f1619;
+  --color-elevated: #14201f;
+  --color-line: #1d2a29;
+  --color-line-strong: #2a3a38;
+
+  --color-ink: #e8efec;
+  --color-muted: #8a9a97;
+  --color-faint: #586866;
+
+  --color-signal: #c8f23d;
+  --color-signal-dim: #93b82c;
+
+  --color-danger: #ff6f61;
+  --color-tone-image: #4fd1a5;
+  --color-tone-doc: #ffb454;
+
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-base);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Grade de blueprint + brilho ambiente ancorado no topo. */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(120% 80% at 50% -10%, #000 35%, transparent 78%);
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background-image:
+      radial-gradient(46rem 30rem at 78% -12%, rgba(200, 242, 61, 0.08), transparent 60%),
+      radial-gradient(40rem 28rem at 8% 8%, rgba(79, 209, 165, 0.05), transparent 58%);
+  }
+
+  ::selection {
+    background: var(--color-signal);
+    color: var(--color-base);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-line-strong);
+    border-radius: 999px;
+    border: 2px solid var(--color-base);
+  }
+}
+
+/* Etiqueta técnica monoespaçada. */
+.mono-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-faint);
+}
+
+.tabular {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Cartão/superfície com sombra multinível em vez de borda dura. */
+.panel {
+  background: color-mix(in oklab, var(--color-surface) 92%, transparent);
+  border: 1px solid var(--color-line);
+  border-radius: 14px;
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.02) inset,
+    0 18px 40px -24px rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(6px);
+}
+
+/* ── Movimento ── carga orquestrada, escalonada por --i. */
+@keyframes fv-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.rise {
+  animation: fv-rise 0.6s var(--ease-out-quint) both;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+
+@keyframes fv-modal-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+.modal-in {
+  animation: fv-modal-in 0.22s var(--ease-out-quint) both;
+}
+
+@keyframes fv-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.backdrop-in {
+  animation: fv-backdrop-in 0.18s ease-out both;
+}
+
+/* Acessibilidade: respeita prefers-reduced-motion (obrigatório). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

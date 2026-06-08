@@ -12,28 +12,33 @@ export function Pagination({ page, total, limit, onPageChange }: PaginationProps
 
   if (totalPages <= 1) return null;
 
+  const btn =
+    'flex h-8 w-8 items-center justify-center rounded-lg border border-line text-muted transition-colors duration-150 hover:border-signal/40 hover:text-signal active:scale-95 disabled:pointer-events-none disabled:opacity-40';
+
   return (
-    <div className="flex items-center justify-between border-t border-gray-200 pt-4 mt-4">
-      <p className="text-sm text-gray-500">
-        {total} {total === 1 ? 'arquivo' : 'arquivos'} no total
+    <div className="flex items-center justify-between border-t border-line/60 pt-4">
+      <p className="tabular text-xs text-faint">
+        {total} {total === 1 ? 'objeto' : 'objetos'} no total
       </p>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3">
         <button
           onClick={() => onPageChange(page - 1)}
           disabled={page <= 1}
-          className="p-1 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+          aria-label="Página anterior"
+          className={btn}
         >
-          <ChevronLeft className="h-5 w-5" />
+          <ChevronLeft className="h-4 w-4" />
         </button>
-        <span className="text-sm text-gray-600">
-          Pagina {page} de {totalPages}
+        <span className="tabular text-xs text-muted">
+          {String(page).padStart(2, '0')} / {String(totalPages).padStart(2, '0')}
         </span>
         <button
           onClick={() => onPageChange(page + 1)}
           disabled={page >= totalPages}
-          className="p-1 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+          aria-label="Próxima página"
+          className={btn}
         >
-          <ChevronRight className="h-5 w-5" />
+          <ChevronRight className="h-4 w-4" />
         </button>
       </div>
     </div>
