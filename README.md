@@ -1,12 +1,10 @@
 # FileVault
 
-Aplicação de upload e gerenciamento de arquivos construída com NestJS + React + Cloudflare R2.
+Aplicação de upload e gerenciamento de arquivos construída com NestJS + React + Cloudflare R2 — upload direto ao object storage via presigned URLs, validação por magic bytes e tipos compartilhados em monorepo.
 
-**Teste técnico para:** Desenvolvedor FullStack — ConectaDev
+[![FileVault — upload de arquivos](docs/preview.png)](https://filevault-api.vercel.app)
 
-[![FileVault — upload de arquivos](docs/preview.png)](https://filevault-henna.vercel.app)
-
-**🔗 Demo ao vivo: [filevault-henna.vercel.app](https://filevault-henna.vercel.app)**
+**🔗 Demo ao vivo: [filevault-api.vercel.app](https://filevault-api.vercel.app)**
 
 ---
 
@@ -35,24 +33,23 @@ O projeto trata as ameaças clássicas: limite de tamanho (evita exaustão de di
 
 ## Demonstracao Online
 
-A forma mais rapida de testar. Basta acessar o link abaixo:
+Aplicação completa rodando em produção:
 
-**https://filevault-henna.vercel.app**
+**https://filevault-api.vercel.app**
 
 | Servico | URL |
 |---------|-----|
-| Frontend | https://filevault-henna.vercel.app |
+| Frontend | https://filevault-api.vercel.app |
 | API | https://filevault-production-4509.up.railway.app/api |
 | Documentacao Swagger | https://filevault-production-4509.up.railway.app/api/docs |
 
-### O que testar
+### Funcionalidades
 
-1. **Upload** -- arraste uma imagem (JPG, PNG) ou um PDF para a area de upload, ou clique para selecionar o arquivo
-2. **Listagem** -- apos o upload, o arquivo aparece na tabela com nome, tamanho e data
-3. **Preview** -- clique no icone do olho para visualizar a imagem ou o PDF diretamente no navegador
-4. **Delete** -- clique no icone da lixeira para remover o arquivo
-5. **Paginacao** -- envie varios arquivos para ver a navegacao entre paginas
-6. **Swagger** -- acesse a documentacao interativa da API em `/api/docs` para testar os endpoints diretamente
+- **Upload** -- arraste e solte imagens (JPG, PNG) ou PDFs na area de upload, ou clique para selecionar
+- **Listagem paginada** -- arquivos enviados aparecem em tabela com nome, tamanho e data, com navegacao entre paginas
+- **Preview** -- visualizacao de imagens e PDFs diretamente no navegador via presigned URL temporaria
+- **Delete** -- remocao do arquivo tanto do object storage (R2) quanto do banco
+- **API documentada** -- todos os endpoints descritos interativamente no Swagger (`/api/docs`)
 
 ### Regras de upload
 
