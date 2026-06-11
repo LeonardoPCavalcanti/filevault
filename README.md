@@ -1,10 +1,14 @@
 # FileVault
 
+[![CI](https://github.com/LeonardoPCavalcanti/filevault/actions/workflows/ci.yml/badge.svg)](https://github.com/LeonardoPCavalcanti/filevault/actions/workflows/ci.yml)
+![Testes](https://img.shields.io/badge/testes-32_unit_%2B_11_E2E-c8f23d)
+[![Demo](https://img.shields.io/badge/demo-vercel-black?logo=vercel)](https://filevault-api.vercel.app)
+
 Aplicação de upload e gerenciamento de arquivos construída com NestJS + React + Cloudflare R2 — upload direto ao object storage via presigned URLs, validação por magic bytes e tipos compartilhados em monorepo.
 
 [![FileVault — upload de arquivos](docs/preview.png)](https://filevault-api.vercel.app)
 
-**🔗 Demo ao vivo: [filevault-api.vercel.app](https://filevault-api.vercel.app)**
+**Demo ao vivo: [filevault-api.vercel.app](https://filevault-api.vercel.app)**
 
 ---
 
@@ -20,6 +24,27 @@ O caminho ingênuo — o arquivo passa pelo servidor da API até o storage — d
 
 Esse é o padrão de fato em produção (S3, GCS, R2) — e a razão de NÃO guardar arquivos como base64 no banco.
 
+```mermaid
+sequenceDiagram
+    autonumber
+    participant C as Cliente (React)
+    participant A as API (NestJS)
+    participant DB as PostgreSQL
+    participant R2 as Cloudflare R2
+
+    C->>A: POST /api/files/upload (multipart)
+    A->>A: valida MIME + magic bytes + tamanho
+    A->>R2: PutObject (chave UUID)
+    A->>DB: INSERT metadados (nome, tipo, tamanho, chave)
+    A-->>C: 201 (id do arquivo)
+
+    Note over C,R2: Visualização — o blob nunca passa pela API
+    C->>A: GET /api/files/:id/preview
+    A->>R2: gera presigned URL (expira em 15 min)
+    A-->>C: URL assinada
+    C->>R2: GET direto no bucket (URL temporária)
+```
+
 ### 2. Não confie na extensão: validação por *magic bytes*
 Um arquivo `virus.exe` renomeado para `foto.png` engana a extensão e até o MIME enviado pelo cliente. Por isso a validação lê os **bytes iniciais** do arquivo (a *magic number* — ex.: PNG começa com `89 50 4E 47`) para confirmar o tipo **real**. É um exemplo concreto de **defense in depth** e de "nunca confie na entrada do cliente".
 
@@ -33,15 +58,11 @@ O projeto trata as ameaças clássicas: limite de tamanho (evita exaustão de di
 
 ## Demonstracao Online
 
-Aplicação completa rodando em produção:
+A interface esta publicada em **https://filevault-api.vercel.app** (Vercel, deploy automatico a cada push).
 
-**https://filevault-api.vercel.app**
-
-| Servico | URL |
-|---------|-----|
-| Frontend | https://filevault-api.vercel.app |
-| API | https://filevault-production-4509.up.railway.app/api |
-| Documentacao Swagger | https://filevault-production-4509.up.railway.app/api/docs |
+> A API e o banco rodam localmente via Docker Compose (instrucoes abaixo) — o backend publico
+> esta temporariamente fora do ar enquanto migra de provedor. A pilha completa sobe com um
+> unico `docker compose up`.
 
 ### Funcionalidades
 
@@ -148,7 +169,7 @@ Os testes tambem rodam automaticamente no CI (GitHub Actions) a cada push.
 | Armazenamento | Cloudflare R2 (compativel com S3, presigned URLs) |
 | Infra | Docker Compose, Turborepo (monorepo) |
 | CI/CD | GitHub Actions (lint, typecheck, testes) |
-| Deploy | Railway (API + PostgreSQL) + Vercel (Frontend) |
+| Deploy | Vercel (frontend) · API + PostgreSQL via Docker Compose |
 
 ## Decisoes de Projeto
 

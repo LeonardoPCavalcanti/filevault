@@ -10,8 +10,8 @@ jobs:
   lint-and-typecheck:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 20
           cache: npm
@@ -35,12 +35,14 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 20
           cache: npm
       - run: npm ci
+      - name: Build shared package
+        run: npm run build --workspace=@filevault/shared
       - name: Run unit tests
         run: npm test --workspace=@filevault/api
       - name: Run E2E tests
@@ -56,10 +58,12 @@ jobs:
   test-web:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 20
           cache: npm
       - run: npm ci
+      - name: Build shared package
+        run: npm run build --workspace=@filevault/shared
       - run: npm test --workspace=@filevault/web
