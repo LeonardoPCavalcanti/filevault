@@ -3,6 +3,7 @@ import { toast } from 'sonner';
 import { ShieldCheck, Database, Lock } from 'lucide-react';
 import type { FileMetadata } from '@filevault/shared';
 import { useFiles, useFilePreview, useDeleteFile } from './hooks/use-files';
+import { isDemo } from './lib/demo-store';
 import { UploadZone } from './components/UploadZone';
 import { FileList } from './components/FileList';
 import { FilePreviewModal } from './components/FilePreviewModal';
@@ -57,6 +58,16 @@ export default function App() {
       </header>
 
       <main className="mx-auto max-w-5xl px-5 py-10 sm:py-14">
+        {isDemo && (
+          <p
+            role="status"
+            className="rise mb-8 rounded-xl border border-signal/30 bg-signal/10 px-4 py-3 font-mono text-xs leading-relaxed text-faint"
+          >
+            <span className="font-bold text-signal">MODO DEMONSTRACAO</span> · a API
+            (NestJS + Postgres + R2) nao esta publicada; este site simula o backend no
+            seu navegador. Os uploads ficam so aqui e somem ao recarregar a pagina.
+          </p>
+        )}
         <section className="rise mb-10" style={{ '--i': 1 } as React.CSSProperties}>
           <h1 className="max-w-xl text-3xl font-bold leading-[1.1] tracking-tight sm:text-[2.6rem]">
             Envie, guarde e recupere

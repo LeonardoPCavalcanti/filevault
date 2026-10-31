@@ -10,6 +10,8 @@ Aplicação de upload e gerenciamento de arquivos construída com NestJS + React
 
 **Demo ao vivo: [filevault-api.vercel.app](https://filevault-api.vercel.app)**
 
+> O demo roda em **modo demonstracao**: a API (NestJS + Postgres + R2) nao esta publicada, entao o site simula o backend no navegador (mesmas regras de MIME e tamanho; uploads ficam so na sessao). Para rodar a stack real, veja "Como rodar" abaixo. O modo liga com `VITE_DEMO=true` ou quando `VITE_API_URL` esta vazio.
+
 ---
 
 ## O que este projeto ensina

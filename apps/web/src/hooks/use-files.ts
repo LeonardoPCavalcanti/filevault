@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../lib/api';
+import { demoDelete, demoList, demoPreview, demoUpload, isDemo } from '../lib/demo-store';
 import type {
   FileListResponse,
   FileMetadata,
@@ -10,6 +11,7 @@ export function useFiles(page: number = 1, limit: number = 20) {
   return useQuery<FileListResponse>({
     queryKey: ['files', page, limit],
     queryFn: async () => {
+      if (isDemo) return demoList(page, limit);
       const { data } = await api.get<FileListResponse>(
         `/files?page=${page}&limit=${limit}`,
       );
@@ -23,6 +25,7 @@ export function useUploadFile() {
 
   return useMutation<FileMetadata, Error, File>({
     mutationFn: async (file: File) => {
+      if (isDemo) return demoUpload(file);
       const formData = new FormData();
       formData.append('file', file);
       const { data } = await api.post<FileMetadata>('/files/upload', formData);
@@ -38,6 +41,7 @@ export function useFilePreview(id: string | null) {
   return useQuery<PreviewResponse>({
     queryKey: ['file-preview', id],
     queryFn: async () => {
+      if (isDemo) return demoPreview(id as string);
       const { data } = await api.get<PreviewResponse>(
         `/files/${id}/preview`,
       );
@@ -52,6 +56,7 @@ export function useDeleteFile() {
 
   return useMutation<void, Error, string>({
     mutationFn: async (id: string) => {
+      if (isDemo) return demoDelete(id);
       await api.delete(`/files/${id}`);
     },
     onSuccess: () => {
