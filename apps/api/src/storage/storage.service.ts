@@ -7,7 +7,7 @@ import {
   GetObjectCommand,
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from 'node:crypto';
 import { extname } from 'path';
 
 @Injectable()
@@ -33,7 +33,7 @@ export class StorageService {
     mimeType: string,
   ): Promise<{ key: string }> {
     const ext = extname(originalName);
-    const key = `${uuidv4()}${ext}`;
+    const key = `${randomUUID()}${ext}`;
 
     await this.s3.send(
       new PutObjectCommand({
